@@ -1,0 +1,4 @@
+Z:\mac16\blender
+Z:\mac16\CorelFiles
+Z:\mac16\1cBases\curl
+Z:\mac16\PyProject\анализ и удаление логов\dist

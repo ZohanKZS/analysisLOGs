@@ -1,0 +1,15 @@
+C:/inetpub/wwwroot/feed/archive
+C:/inetpub/wwwroot/forte/archive
+C:/inetpub/wwwroot/halyk/archive
+C:/inetpub/wwwroot/jusan/archive
+C:/inetpub/wwwroot/wolt/archive
+C:/inetpub/wwwroot/plaza/archive
+C:\LOGS\FCN
+C:\LOGS\LogGFK
+C:\LOGS\LogWallet
+C:\LOGS\WebServ
+C:\LOGS\ИНВЕНТ
+C:\LOGS\не верные цены
+C:\LOGS\отправкаДоков
+C:\LOGS\отправкаДолжников
+C:\LOGS\РМК
