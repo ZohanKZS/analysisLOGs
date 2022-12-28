@@ -1,17 +1,17 @@
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QTextBrowser, QPushButton, QLineEdit,
-                             QFileDialog, QTableWidget, QTableWidgetItem, QLabel,QCheckBox)
+                             QFileDialog, QTableWidget, QTableWidgetItem, QLabel, QCheckBox)
 from PyQt6.QtGui import QIcon, QTextOption, QColor
 from PyQt6.QtCore import Qt
 import os
 import datetime as dt
 
-VER = '1.0.0.5'
+VER = '1.0.0.6'
 d = dt.datetime.now()
 #dstr='{:%d/%m/%y %H:%M:%S}'.format(d)
-dstr='{:%d.%m.%y}'.format(d)
-dstr='19.12.22'
+dstr = '{:%d.%m.%y}'.format(d)
+dstr = '28.12.22'
 
-VER1 = '1.0.0.5 ('+dstr+')'
+VER1 = VER+' ('+dstr+')'
 
 
 def memoAdd1(self, s):
@@ -46,10 +46,13 @@ class AppDialog(QMainWindow):
     def __init__(self):
         super().__init__()
 
+    def initUI(self):
+
         self.setWindowTitle('Delete logs files KZS v'+VER1)
         self.setWindowIcon(QIcon('zohan.ico'))
-        self.resize(480, 480)
-        self.setFixedSize(970, 480)
+        self.resize(970, 680)
+        # self.setFixedSize(970, 480)
+        self.setFixedWidth(970)
         self.move(10, 500)
         # self.setStyleSheet('''
         #                 QPushButton {
@@ -57,13 +60,13 @@ class AppDialog(QMainWindow):
         #                     border-radius:3px;
         #                     border: 1px solid #3873d9;
         #                     background-color: qlineargradient( x1: 0, y1: 1, x2: 1, y2: 0, stop: 0 silver, stop: 1 gray);
-        #                 }        
+        #                 }
         # ''')
         self.statusBar().showMessage('')
 
         self.edit = QLineEdit(self)
         self.edit.setPlaceholderText('Set file path...')
-        self.edit.setText('C:\\000\\111')
+        # self.edit.setText('C:\\000\\111')
         self.edit.resize(280, 20)
         self.edit.move(10, 0)
 
@@ -81,15 +84,16 @@ class AppDialog(QMainWindow):
 
         self.chek = QCheckBox('Open folder', self)
         self.chek.move(480, 5)
-        self.chek.resize(110, 25)    
-        # self.chek.setChecked(True)    
-        
+        self.chek.resize(110, 25)
+        # self.chek.setChecked(True)
 
-        self.bt2 = QPushButton('Получить файлы ASBC', self, clicked=self.bt2Click)
+        self.bt2 = QPushButton('Получить файлы ASBC',
+                               self, clicked=self.bt2Click)
         self.bt2.move(480, 25)
         self.bt2.resize(140, 25)
 
-        self.bt2 = QPushButton('Получить файлы Тест', self, clicked=self.bt3Click)
+        self.bt2 = QPushButton('Получить файлы Тест',
+                               self, clicked=self.bt3Click)
         self.bt2.move(630, 25)
         self.bt2.resize(140, 25)
 
@@ -110,18 +114,17 @@ class AppDialog(QMainWindow):
             '''
         self.memo1.setStyleSheet(styleMemo)
 
-
         self.bt1 = QPushButton('C', self, clicked=self.memo1.clear)
         self.bt1.move(245, 25)
-        self.bt1.resize(25, 25)         
+        self.bt1.resize(25, 25)
 
-        self.tab1 = QTableWidget(1, 3, self,cellClicked=self.CellClick)
+        self.tab1 = QTableWidget(1, 3, self, cellClicked=self.CellClick)
         self.tab1.move(480, 55)
         self.tab1.resize(480, 400)
-        #border-top-color: green;
-        #border-bottom-color: red;
+        # border-top-color: green;
+        # border-bottom-color: red;
 
-        styleTab="""
+        styleTab = """
             border: 1px solid black;
             border-radius: 4px;
             background-color: silver;
@@ -133,7 +136,7 @@ class AppDialog(QMainWindow):
             font-weight:bold;
         """
 
-        styleTab1='''
+        styleTab1 = '''
             border: 1px solid black; 
             background:silver;
             gridline-color:rgb(100,100,100);
@@ -152,10 +155,10 @@ class AppDialog(QMainWindow):
         headls = ['Путь к файлу', 'Размер', 'Кол-во']
         self.tab1.setHorizontalHeaderLabels(headls)
 
-        self.label1=QLabel('Total size:',self)
+        self.label1 = QLabel('Total size:', self)
         self.label1.move(780, 30)
-        self.label1.resize(250,20)
-        styleLBL='''
+        self.label1.resize(250, 20)
+        styleLBL = '''
             font-family: arial;
             font-weight:bold;
             font-size:15px;
@@ -163,27 +166,21 @@ class AppDialog(QMainWindow):
             '''
         self.label1.setStyleSheet(styleLBL)
 
-
-
-
-        
-
-
-    def DataOutPut(self,mfp):
+    def DataOutPut(self, mfp):
 
         self.tab1.setRowCount(len(mfp))
-        
+
         k = 0
-        total=0
+        total = 0
         for i in mfp:
             # self.memo1.append(i)
-            size = ('{:10.2f}'.format(getFolderSize(i)/1024))
-            sizef=getFolderSize(i)/1024
+            size = ('{:10.2f}'.format(getFolderSize(i)/1024/1024))
+            sizef = getFolderSize(i)/1024/1024
 
             size = f'{float(size):,}'.replace(',', ' ')
             self.tab1.setItem(k, 0, QTableWidgetItem(i))
 
-            ite = QTableWidgetItem(size+'KB')
+            ite = QTableWidgetItem(size+'MB')
             ite.setTextAlignment(Qt.AlignmentFlag.AlignRight |
                                  Qt.AlignmentFlag.AlignVCenter)
             self.tab1.setItem(k, 1, ite)
@@ -194,14 +191,14 @@ class AppDialog(QMainWindow):
                                  Qt.AlignmentFlag.AlignVCenter)
             self.tab1.setItem(k, 2, ite)
 
-            total+=sizef
+            total += sizef
 
             k += 1
 
-        total='{:10.2f}'.format(total)
-        total=f'{float(total):,}'.replace(',', ' ')
+        total = '{:10.2f}'.format(total)
+        total = f'{float(total):,}'.replace(',', ' ')
 
-        self.label1.setText('Total size:'+total+'KB')
+        self.label1.setText('Total size:'+total+'MB')
         self.tab1.resizeColumnsToContents()
         self.tab1.resizeRowsToContents()
 
@@ -211,26 +208,24 @@ class AppDialog(QMainWindow):
         # for i in lsfp:
         #     mfp.append(f'C:/inetpub/wwwroot/{i}/archive')
 
-        fn=open('config.txt','r',encoding='utf-8')
+        fn = open('config.txt', 'r', encoding='utf-8')
         for i in fn:
-            it=i.replace('\n','')
+            it = i.replace('\n', '')
 
             mfp.append(it)
 
-
         self.DataOutPut(mfp)
 
-
-    def CellClick(self,r,c):
+    def CellClick(self, r, c):
         # print(str(r),'   ',str(c))
         # print(self.tab1.item(r,c).text())
-        tt=self.tab1.item(r,c).text()
+        tt = self.tab1.item(r, c).text()
         self.edit.setText(tt)
         self.btClick()
         if self.chek.isChecked():
             # os.system(r"explorer.exe "+tt)
             # os.system(r'explorer /select,"'+tt+'"')
-            os.system('explorer /open,"'+tt.replace('/','\\')+'"')
+            os.system('explorer /open,"'+tt.replace('/', '\\')+'"')
 
     def bt3Click(self):
         lsfp = ['pyqt5', 'snifmouse', 'snifmouse2', 'данные в таблице']
@@ -284,22 +279,27 @@ class AppDialog(QMainWindow):
 
         self.statusBar().showMessage('Count rows - '+str(n))
 
-    # with os.scandir(pth) as listOfEntries:
-    #     for entry in listOfEntries:
-    #         #if entry.is_file():
-    #         memoAdd1(self,str(entry))
-    # memoAdd1(self,listOfEntries)
-
     def tbtClick(self):
         r = QFileDialog.getExistingDirectory(self, 'Open catalog...')
         self.edit.setText(r)
         print(r)
+
+    # Здесь попытки сделать функцию отслеживания изменения размера главного окна
+    def resizeEvent(self, event):
+        print("Something "+str((self.width()))+'  '+str(self.height()))
+        # width = self.MainWindow.frameGeometry().width()
+        # height = self.MainWindow.frameGeometry().height()
+        # self.web.setGeometry(0, 40, width-9, height-49)
+        # super(Ui_MainWindow, self).resizeEvent(event)
+        self.tab1.resize(480, self.height()-80)
+        self.memo1.resize(460, self.height()-80)
 
 
 if __name__ == '__main__':
     app = QApplication([])
 
     demo = AppDialog()
+    demo.initUI()
     demo.show()
 
     app.exec()
